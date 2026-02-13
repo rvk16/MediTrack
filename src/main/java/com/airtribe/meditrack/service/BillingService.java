@@ -1,6 +1,10 @@
 package com.airtribe.meditrack.service;
 
-import com.airtribe.meditrack.entity.*;
+import com.airtribe.meditrack.entity.Appointment;
+import com.airtribe.meditrack.entity.Bill;
+import com.airtribe.meditrack.entity.BillSummary;
+import com.airtribe.meditrack.entity.Doctor;
+import com.airtribe.meditrack.entity.Patient;
 import com.airtribe.meditrack.exception.InvalidDataException;
 import com.airtribe.meditrack.factory.BillFactory;
 import com.airtribe.meditrack.repository.BillRepository;

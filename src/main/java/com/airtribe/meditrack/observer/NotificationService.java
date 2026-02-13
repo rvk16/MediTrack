@@ -2,6 +2,8 @@ package com.airtribe.meditrack.observer;
 
 import com.airtribe.meditrack.entity.Appointment;
 import com.airtribe.meditrack.util.DateUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 /**
@@ -11,24 +13,24 @@ import org.springframework.stereotype.Component;
 @Component
 public class NotificationService implements AppointmentObserver {
 
+    private static final Logger log = LoggerFactory.getLogger(NotificationService.class);
+
     @Override
     public void onAppointmentCreated(Appointment appointment) {
-        System.out.println("[NOTIFICATION] New appointment created: "
-                + appointment.getPatientName() + " with Dr. " + appointment.getDoctorName()
-                + " on " + DateUtil.formatForDisplay(appointment.getAppointmentDateTime()));
+        log.info("[NOTIFICATION] New appointment created: {} with Dr. {} on {}",
+                appointment.getPatientName(), appointment.getDoctorName(),
+                DateUtil.formatForDisplay(appointment.getAppointmentDateTime()));
     }
 
     @Override
     public void onAppointmentCancelled(Appointment appointment) {
-        System.out.println("[NOTIFICATION] Appointment CANCELLED: "
-                + appointment.getPatientName() + " with Dr. " + appointment.getDoctorName()
-                + " (ID: " + appointment.getId() + ")");
+        log.info("[NOTIFICATION] Appointment CANCELLED: {} with Dr. {} (ID: {})",
+                appointment.getPatientName(), appointment.getDoctorName(), appointment.getId());
     }
 
     @Override
     public void onAppointmentStatusChanged(Appointment appointment) {
-        System.out.println("[NOTIFICATION] Appointment status changed to "
-                + appointment.getStatus() + " for " + appointment.getPatientName()
-                + " (ID: " + appointment.getId() + ")");
+        log.info("[NOTIFICATION] Appointment status changed to {} for {} (ID: {})",
+                appointment.getStatus(), appointment.getPatientName(), appointment.getId());
     }
 }

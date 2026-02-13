@@ -1,6 +1,9 @@
 package com.airtribe.meditrack.factory;
 
-import com.airtribe.meditrack.entity.*;
+import com.airtribe.meditrack.entity.Appointment;
+import com.airtribe.meditrack.entity.Bill;
+import com.airtribe.meditrack.entity.Doctor;
+import com.airtribe.meditrack.entity.Patient;
 import com.airtribe.meditrack.util.IdGenerator;
 
 /**

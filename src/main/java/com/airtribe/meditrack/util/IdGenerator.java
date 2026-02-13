@@ -1,5 +1,8 @@
 package com.airtribe.meditrack.util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -17,9 +20,11 @@ public class IdGenerator {
     private final AtomicInteger appointmentCounter;
     private final AtomicInteger billCounter;
 
+    private static final Logger log = LoggerFactory.getLogger(IdGenerator.class);
+
     // Static block — demonstrates static initialization
     static {
-        System.out.println("[Static Block] IdGenerator singleton initialized (eager).");
+        log.info("[Static Block] IdGenerator singleton initialized (eager).");
     }
 
     // Private constructor — prevents external instantiation
@@ -33,15 +38,6 @@ public class IdGenerator {
     // Eager singleton accessor
     public static IdGenerator getInstance() {
         return INSTANCE;
-    }
-
-    // --- Lazy Singleton (inner class holder pattern — bonus demo) ---
-    private static class LazyHolder {
-        private static final IdGenerator LAZY_INSTANCE = new IdGenerator();
-    }
-
-    public static IdGenerator getLazyInstance() {
-        return LazyHolder.LAZY_INSTANCE;
     }
 
     // --- ID generation methods (thread-safe via AtomicInteger) ---

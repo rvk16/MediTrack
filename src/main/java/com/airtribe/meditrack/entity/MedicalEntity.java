@@ -3,6 +3,8 @@ package com.airtribe.meditrack.entity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -19,11 +21,13 @@ public abstract class MedicalEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     // Static counter — initialized via static block
+    private static final Logger log = LoggerFactory.getLogger(MedicalEntity.class);
+
     private static int totalEntitiesCreated;
 
     static {
         totalEntitiesCreated = 0;
-        System.out.println("[Static Block] MedicalEntity class loaded.");
+        log.info("[Static Block] MedicalEntity class loaded.");
     }
 
     @Id

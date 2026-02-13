@@ -4,7 +4,6 @@ import com.airtribe.meditrack.entity.Doctor;
 import com.airtribe.meditrack.entity.Specialization;
 import com.airtribe.meditrack.exception.InvalidDataException;
 import com.airtribe.meditrack.repository.DoctorRepository;
-import com.airtribe.meditrack.util.DataStore;
 import com.airtribe.meditrack.util.IdGenerator;
 import com.airtribe.meditrack.util.Validator;
 import org.springframework.stereotype.Service;
@@ -26,9 +25,6 @@ import java.util.stream.Collectors;
 public class DoctorService {
 
     private final DoctorRepository doctorRepository;
-
-    // DataStore kept as a generics demonstration — not the primary store
-    private final DataStore<Doctor> doctorCache = new DataStore<>();
 
     public DoctorService(DoctorRepository doctorRepository) {
         this.doctorRepository = doctorRepository;
@@ -143,7 +139,4 @@ public class DoctorService {
         return doctorRepository;
     }
 
-    public DataStore<Doctor> getCache() {
-        return doctorCache;
-    }
 }

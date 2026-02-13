@@ -2,7 +2,9 @@ package com.airtribe.meditrack.entity;
 
 import com.airtribe.meditrack.constants.Constants;
 import com.airtribe.meditrack.interfaces.Payable;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 
 import java.time.LocalDateTime;
 

@@ -3,14 +3,28 @@ package com.airtribe.meditrack.util;
 import com.airtribe.meditrack.entity.Doctor;
 import com.airtribe.meditrack.entity.Specialization;
 
-import java.util.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
  * Rule-based AI helper for doctor recommendations and appointment slot suggestions.
  * Demonstrates: collections, streams, lambdas, Map usage.
  */
-public class AIHelper {
+public final class AIHelper {
+
+    private static final Logger log = LoggerFactory.getLogger(AIHelper.class);
+
+    private AIHelper() {
+        throw new UnsupportedOperationException("Utility class");
+    }
 
     // Symptom-to-specialization mapping
     private static final Map<String, Specialization> SYMPTOM_MAP = new LinkedHashMap<>();
@@ -59,7 +73,7 @@ public class AIHelper {
         SYMPTOM_MAP.put("depression", Specialization.PSYCHIATRY);
         SYMPTOM_MAP.put("insomnia", Specialization.PSYCHIATRY);
 
-        System.out.println("[Static Block] AIHelper symptom map loaded with " + SYMPTOM_MAP.size() + " entries.");
+        log.info("[Static Block] AIHelper symptom map loaded with {} entries.", SYMPTOM_MAP.size());
     }
 
     /**

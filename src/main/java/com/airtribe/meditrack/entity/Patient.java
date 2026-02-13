@@ -1,7 +1,13 @@
 package com.airtribe.meditrack.entity;
 
 import com.airtribe.meditrack.interfaces.Searchable;
-import jakarta.persistence.*;
+import jakarta.persistence.CollectionTable;
+import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Table;
 
 import java.util.ArrayList;
 import java.util.List;

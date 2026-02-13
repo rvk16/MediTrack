@@ -3,7 +3,6 @@ package com.airtribe.meditrack.service;
 import com.airtribe.meditrack.entity.Patient;
 import com.airtribe.meditrack.exception.InvalidDataException;
 import com.airtribe.meditrack.repository.PatientRepository;
-import com.airtribe.meditrack.util.DataStore;
 import com.airtribe.meditrack.util.IdGenerator;
 import com.airtribe.meditrack.util.Validator;
 import org.springframework.stereotype.Service;
@@ -24,9 +23,6 @@ import java.util.Optional;
 public class PatientService {
 
     private final PatientRepository patientRepository;
-
-    // DataStore kept as a generics demonstration
-    private final DataStore<Patient> patientCache = new DataStore<>();
 
     public PatientService(PatientRepository patientRepository) {
         this.patientRepository = patientRepository;
@@ -123,7 +119,4 @@ public class PatientService {
         return patientRepository;
     }
 
-    public DataStore<Patient> getCache() {
-        return patientCache;
-    }
 }
