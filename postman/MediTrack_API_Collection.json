@@ -1,0 +1,775 @@
+{
+  "info": {
+    "name": "MediTrack API Collection",
+    "description": "Complete API collection for MediTrack — a Spring Boot medical appointment management system.\n\nBase URL: http://localhost:8080\n\n**Workflow:**\n1. Create a Doctor\n2. Create a Patient\n3. Create an Appointment (needs doctorId + patientId)\n4. Generate a Bill (needs appointmentId)\n5. Use search, analytics, AI, and data endpoints as needed",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080",
+      "type": "string"
+    },
+    {
+      "key": "doctorId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "patientId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "appointmentId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "billId",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Doctors",
+      "description": "CRUD, search, and analytics for Doctor entities.",
+      "item": [
+        {
+          "name": "Add Doctor",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    var json = pm.response.json();",
+                  "    pm.collectionVariables.set('doctorId', json.id);",
+                  "    pm.test('Doctor created', function() {",
+                  "        pm.expect(json.id).to.not.be.empty;",
+                  "        pm.expect(json.name).to.eql('Dr. Arun Sharma');",
+                  "    });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Dr. Arun Sharma\",\n  \"age\": 45,\n  \"gender\": \"Male\",\n  \"phone\": \"9876543210\",\n  \"email\": \"arun.sharma@meditrack.com\",\n  \"specialization\": \"CARDIOLOGY\",\n  \"consultationFee\": 500.00,\n  \"yearsOfExperience\": 20,\n  \"availableSlots\": [\"09:00-10:00\", \"14:00-15:00\"]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/doctors",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "doctors"]
+            }
+          }
+        },
+        {
+          "name": "Add Doctor (Dermatology)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    var json = pm.response.json();",
+                  "    pm.test('Dermatology doctor created', function() {",
+                  "        pm.expect(json.specialization).to.eql('DERMATOLOGY');",
+                  "    });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Dr. Priya Patel\",\n  \"age\": 38,\n  \"gender\": \"Female\",\n  \"phone\": \"9876543211\",\n  \"email\": \"priya.patel@meditrack.com\",\n  \"specialization\": \"DERMATOLOGY\",\n  \"consultationFee\": 350.00,\n  \"yearsOfExperience\": 12,\n  \"availableSlots\": [\"10:00-11:00\", \"16:00-17:00\"]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/doctors",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "doctors"]
+            }
+          }
+        },
+        {
+          "name": "Get All Doctors",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/doctors",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "doctors"]
+            }
+          }
+        },
+        {
+          "name": "Get Doctor by ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/doctors/{{doctorId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "doctors", "{{doctorId}}"]
+            }
+          }
+        },
+        {
+          "name": "Update Doctor",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"consultationFee\": 600.00,\n  \"yearsOfExperience\": 22\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/doctors/{{doctorId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "doctors", "{{doctorId}}"]
+            }
+          }
+        },
+        {
+          "name": "Delete Doctor",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/api/doctors/{{doctorId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "doctors", "{{doctorId}}"]
+            }
+          }
+        },
+        {
+          "name": "Search Doctors by Keyword",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/doctors/search?keyword=Arun",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "doctors", "search"],
+              "query": [
+                { "key": "keyword", "value": "Arun" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Doctors by Specialization",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/doctors/specialization/CARDIOLOGY",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "doctors", "specialization", "CARDIOLOGY"]
+            }
+          }
+        },
+        {
+          "name": "Get Doctors Sorted by Fee",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/doctors/sorted/fee",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "doctors", "sorted", "fee"]
+            }
+          }
+        },
+        {
+          "name": "Analytics: Average Consultation Fee",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/doctors/analytics/average-fee",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "doctors", "analytics", "average-fee"]
+            }
+          }
+        },
+        {
+          "name": "Analytics: Count by Specialization",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/doctors/analytics/by-specialization",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "doctors", "analytics", "by-specialization"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Patients",
+      "description": "CRUD, search, and deep clone demo for Patient entities.",
+      "item": [
+        {
+          "name": "Add Patient",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    var json = pm.response.json();",
+                  "    pm.collectionVariables.set('patientId', json.id);",
+                  "    pm.test('Patient created', function() {",
+                  "        pm.expect(json.id).to.not.be.empty;",
+                  "        pm.expect(json.name).to.eql('Rahul Verma');",
+                  "    });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Rahul Verma\",\n  \"age\": 30,\n  \"gender\": \"Male\",\n  \"phone\": \"9123456780\",\n  \"email\": \"rahul.verma@email.com\",\n  \"bloodGroup\": \"O+\",\n  \"allergies\": [\"Penicillin\", \"Dust\"],\n  \"medicalHistory\": [\"Asthma\", \"Appendectomy 2020\"]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/patients",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "patients"]
+            }
+          }
+        },
+        {
+          "name": "Add Patient (Second)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Sneha Iyer\",\n  \"age\": 25,\n  \"gender\": \"Female\",\n  \"phone\": \"9123456781\",\n  \"email\": \"sneha.iyer@email.com\",\n  \"bloodGroup\": \"A+\",\n  \"allergies\": [],\n  \"medicalHistory\": [\"Migraine\"]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/patients",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "patients"]
+            }
+          }
+        },
+        {
+          "name": "Get All Patients",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/patients",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "patients"]
+            }
+          }
+        },
+        {
+          "name": "Get Patient by ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/patients/{{patientId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "patients", "{{patientId}}"]
+            }
+          }
+        },
+        {
+          "name": "Update Patient",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phone\": \"9999999999\",\n  \"allergies\": [\"Penicillin\", \"Dust\", \"Pollen\"]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/patients/{{patientId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "patients", "{{patientId}}"]
+            }
+          }
+        },
+        {
+          "name": "Delete Patient",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/api/patients/{{patientId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "patients", "{{patientId}}"]
+            }
+          }
+        },
+        {
+          "name": "Search Patients by Keyword",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/patients/search?keyword=Rahul",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "patients", "search"],
+              "query": [
+                { "key": "keyword", "value": "Rahul" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Search Patients by Name",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/patients/search/name?name=Verma",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "patients", "search", "name"],
+              "query": [
+                { "key": "name", "value": "Verma" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Search Patients by Age",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/patients/search/age?age=30",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "patients", "search", "age"],
+              "query": [
+                { "key": "age", "value": "30" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Clone Patient (Deep Copy Demo)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    var json = pm.response.json();",
+                  "    pm.test('Cloned patient has new ID and (Copy) suffix', function() {",
+                  "        pm.expect(json.name).to.include('(Copy)');",
+                  "        pm.expect(json.id).to.not.eql(pm.collectionVariables.get('patientId'));",
+                  "    });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/api/patients/{{patientId}}/clone",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "patients", "{{patientId}}", "clone"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Appointments",
+      "description": "Create, view, cancel, update status, and analytics for Appointments.",
+      "item": [
+        {
+          "name": "Create Appointment",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    var json = pm.response.json();",
+                  "    pm.collectionVariables.set('appointmentId', json.id);",
+                  "    pm.test('Appointment created with CONFIRMED status', function() {",
+                  "        pm.expect(json.id).to.not.be.empty;",
+                  "        pm.expect(json.status).to.eql('CONFIRMED');",
+                  "    });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"doctorId\": \"{{doctorId}}\",\n  \"patientId\": \"{{patientId}}\",\n  \"dateTime\": \"2026-03-15T10:00:00\",\n  \"notes\": \"Routine cardiac checkup\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/appointments",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "appointments"]
+            }
+          }
+        },
+        {
+          "name": "Get All Appointments",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/appointments",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "appointments"]
+            }
+          }
+        },
+        {
+          "name": "Get Appointment by ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/appointments/{{appointmentId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "appointments", "{{appointmentId}}"]
+            }
+          }
+        },
+        {
+          "name": "Update Appointment Status",
+          "request": {
+            "method": "PUT",
+            "url": {
+              "raw": "{{baseUrl}}/api/appointments/{{appointmentId}}/status?status=COMPLETED",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "appointments", "{{appointmentId}}", "status"],
+              "query": [
+                { "key": "status", "value": "COMPLETED" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Cancel Appointment",
+          "request": {
+            "method": "PUT",
+            "url": {
+              "raw": "{{baseUrl}}/api/appointments/{{appointmentId}}/cancel",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "appointments", "{{appointmentId}}", "cancel"]
+            }
+          }
+        },
+        {
+          "name": "Get Appointments by Doctor",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/appointments/doctor/{{doctorId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "appointments", "doctor", "{{doctorId}}"]
+            }
+          }
+        },
+        {
+          "name": "Get Appointments by Patient",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/appointments/patient/{{patientId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "appointments", "patient", "{{patientId}}"]
+            }
+          }
+        },
+        {
+          "name": "Get Upcoming Appointments",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/appointments/upcoming",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "appointments", "upcoming"]
+            }
+          }
+        },
+        {
+          "name": "Analytics: Appointments per Doctor",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/appointments/analytics/per-doctor",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "appointments", "analytics", "per-doctor"]
+            }
+          }
+        },
+        {
+          "name": "Analytics: Appointments per Status",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/appointments/analytics/per-status",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "appointments", "analytics", "per-status"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Bills",
+      "description": "Billing with Factory + Strategy patterns, analytics, and immutable BillSummary.",
+      "item": [
+        {
+          "name": "Generate Bill (Standard)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    var json = pm.response.json();",
+                  "    pm.collectionVariables.set('billId', json.id);",
+                  "    pm.test('Standard bill created', function() {",
+                  "        pm.expect(json.billType).to.eql('STANDARD');",
+                  "        pm.expect(json.totalAmount).to.be.above(0);",
+                  "    });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"appointmentId\": \"{{appointmentId}}\",\n  \"billType\": \"STANDARD\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/bills",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "bills"]
+            }
+          }
+        },
+        {
+          "name": "Generate Bill (Insurance)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"appointmentId\": \"{{appointmentId}}\",\n  \"billType\": \"INSURANCE\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/bills",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "bills"]
+            }
+          }
+        },
+        {
+          "name": "Generate Bill (Emergency)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"appointmentId\": \"{{appointmentId}}\",\n  \"billType\": \"EMERGENCY\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/bills",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "bills"]
+            }
+          }
+        },
+        {
+          "name": "Get All Bills",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/bills",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "bills"]
+            }
+          }
+        },
+        {
+          "name": "Get Bill by ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/bills/{{billId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "bills", "{{billId}}"]
+            }
+          }
+        },
+        {
+          "name": "Get Bill Summary (Immutable)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/bills/{{billId}}/summary",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "bills", "{{billId}}", "summary"]
+            }
+          }
+        },
+        {
+          "name": "Get Bills by Patient",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/bills/patient/{{patientId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "bills", "patient", "{{patientId}}"]
+            }
+          }
+        },
+        {
+          "name": "Analytics: Revenue",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/bills/analytics/revenue",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "bills", "analytics", "revenue"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "AI Recommendations",
+      "description": "Rule-based AI doctor recommendations and slot suggestions.",
+      "item": [
+        {
+          "name": "Recommend Doctors by Symptoms",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/ai/recommend?symptoms=chest pain, heart",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "ai", "recommend"],
+              "query": [
+                { "key": "symptoms", "value": "chest pain, heart" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Recommend Doctors (Skin)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/ai/recommend?symptoms=rash, acne, skin irritation",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "ai", "recommend"],
+              "query": [
+                { "key": "symptoms", "value": "rash, acne, skin irritation" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Suggest Available Slots",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/ai/slots",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "ai", "slots"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Data I/O & Stats",
+      "description": "CSV persistence (save/load) and system statistics.",
+      "item": [
+        {
+          "name": "Save All Data to CSV",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/api/data/save",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "data", "save"]
+            }
+          }
+        },
+        {
+          "name": "Load Data from CSV",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/api/data/load",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "data", "load"]
+            }
+          }
+        },
+        {
+          "name": "Get System Stats",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/data/stats",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "data", "stats"]
+            }
+          }
+        },
+        {
+          "name": "H2 Console (Browser Only)",
+          "request": {
+            "method": "GET",
+            "description": "Open http://localhost:8080/h2-console in a browser.\nJDBC URL: jdbc:h2:mem:meditrackdb\nUsername: sa\nPassword: (empty)",
+            "url": {
+              "raw": "{{baseUrl}}/h2-console",
+              "host": ["{{baseUrl}}"],
+              "path": ["h2-console"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
